@@ -64,7 +64,7 @@ This tool requires ChromeDriver.
 From the repository root:
 
 ```bash
-python src/app.py
+python src/main.py
 ```
 
 ---
@@ -110,7 +110,7 @@ Generates an Excel `.xls` file containing:
 
 ## 🗺️ Planned Improvements
 
-- [ ] Refactor code into multiple modules (GUI, scraping, export)
+- [x] Refactor code into multiple modules (GUI, scraping, export)
 - [ ] Move captcha input fully into the GUI
 - [ ] Add anonymized sample input/output files
 - [ ] Improve GUI layout and styling
@@ -118,7 +118,7 @@ Generates an Excel `.xls` file containing:
 
 ---
 
-## 👤 Author
+## 👤 Authors
 
 **Samarth Kashyap**
 
