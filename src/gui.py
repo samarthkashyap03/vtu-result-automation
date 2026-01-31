@@ -4,7 +4,7 @@ Handles the Tkinter interface for user input and configuration
 """
 
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog, messagebox
 
 
 class AutomationGUI:
@@ -161,6 +161,27 @@ class AutomationGUI:
             "start_row": self.start_row.get(),
             "end_row": self.end_row.get()
         }
+        
+    def get_captcha_input(self):
+        """
+        Prompt user for captcha input via a dialog
+        
+        Returns:
+            String with the captcha code entered by user
+        """
+        return simpledialog.askstring("Captcha Required", "Enter results page captcha:")
+    
+    def show_error(self, message):
+        """Show an error message dialog"""
+        messagebox.showerror("Error", message)
+        
+    def show_info(self, message):
+        """Show an info message dialog"""
+        messagebox.showinfo("Information", message)
+        
+    def show_warning(self, message):
+        """Show a warning message dialog"""
+        messagebox.showwarning("Warning", message)
     
     def run(self):
         """Start the GUI main loop"""
