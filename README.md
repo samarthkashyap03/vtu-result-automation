@@ -114,7 +114,7 @@ Generates an Excel `.xls` file containing:
 - [x] Move captcha input fully into the GUI
 - [ ] Add anonymized sample input/output files
 - [ ] Improve GUI layout and styling
-- [ ] Improve error handling and robustness
+- [x] Improve error handling and robustness
 
 ---
 
