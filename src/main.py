@@ -14,6 +14,10 @@ from excel_io import (
     write_subject_data,
     save_workbook
 )
+from logger import setup_logger
+import logging
+
+logger = setup_logger(__name__)
 
 
 def process_results(gui, inputs):
@@ -29,19 +33,26 @@ def process_results(gui, inputs):
     website = inputs["website"]
     save_path = inputs["save_path"]
     
+    scraper = None
+    
     # Validate row inputs
     try:
         start_row = int(inputs["start_row"])
         end_row = int(inputs["end_row"])
+
     except ValueError:
+        logger.error("Invalid row numbers provided.")
         gui.show_error("Start/End row must be numbers.")
         return
     
     # Load input Excel file containing USNs
     in_book, in_sheet = load_input_workbook(usn_file)
     if not in_book:
-        gui.show_error("Failed to load input workbook.")
+        # Error is already logged in load_input_workbook
+        gui.show_error("Failed to load input workbook. Check logs for details.")
         return
+    
+    logger.info(f"Processing USNs from row {start_row} to {end_row}")
     
     # Create output Excel workbook for results
     out_book, out_sheet, orange_style = create_output_workbook()
@@ -56,12 +67,15 @@ def process_results(gui, inputs):
     try:
         scraper.setup_driver()
     except Exception as e:
+        logger.critical(f"Failed to setup driver: {e}")
         gui.show_error(f"Failed to setup driver: {e}")
         return
     
     # Locate page elements
     if not scraper.locate_page_elements():
+        logger.error("Failed to locate page elements.")
         gui.show_error("Page elements not found. Website layout may have changed.")
+        scraper.cleanup()
         return
     
     time.sleep(WAIT_BEFORE_CAPTCHA)
@@ -69,6 +83,7 @@ def process_results(gui, inputs):
     # Get captcha from user
     captcha = gui.get_captcha_input()
     if not captcha:
+        logger.warning("Captcha input cancelled by user.")
         gui.show_warning("Captcha input cancelled. Stopping.")
         scraper.cleanup()
         return
@@ -110,17 +125,21 @@ def process_results(gui, inputs):
             success_count += 1
             
         except Exception as e:
-            print(f"Error processing {usn}: {e}")
+            logger.error(f"Error processing {usn}: {e}")
             error_count += 1
         
         # Close result window and return to main page
         scraper.close_result_and_return_to_main()
     
     # Save the output Excel file
-    save_workbook(out_book, save_path)
-    
-    gui.show_info(f"Processing complete.\nProcessed: {success_count}\nErrors: {error_count}")
-    scraper.cleanup()
+    try:
+        save_workbook(out_book, save_path)
+        gui.show_info(f"Processing complete.\nProcessed: {success_count}\nErrors: {error_count}")
+    except Exception as e:
+        gui.show_error(f"Failed to save results: {e}")
+    finally:
+        if scraper:
+            scraper.cleanup()
 
 
 def main():
@@ -140,7 +159,17 @@ def main():
     gui = AutomationGUI(on_submit_callback=on_submit)
     
     # Start the GUI
-    gui.run()
+    try:
+        logger.info("Starting application GUI.")
+        gui.run()
+    except Exception as e:
+        logger.critical(f"Unhandled exception: {e}", exc_info=True)
+        # Try to show error in GUI if possible, otherwise just log
+        try:
+            gui.show_error(f"Fatal Error: {e}")
+        except:
+            pass
+        raise
 
 
 if __name__ == "__main__":

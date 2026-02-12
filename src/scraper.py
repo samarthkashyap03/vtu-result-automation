@@ -9,8 +9,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import time
+import logging
+from logger import setup_logger
 from config import (
     XPATH_USN_INPUT,
     XPATH_CAPTCHA_INPUT,
@@ -26,8 +30,11 @@ from config import (
     MAX_SUBJECTS,
     WAIT_AFTER_STARTUP,
     WAIT_BEFORE_CAPTCHA,
-    WAIT_AFTER_INPUT
+    WAIT_AFTER_INPUT,
+    WAIT_TIMEOUT
 )
+
+logger = setup_logger(__name__)
 
 
 class ResultScraper:
@@ -46,6 +53,7 @@ class ResultScraper:
         self.driver = None
         self.actions = None
         self.main_window = None
+        self.wait = None
         
         # Page elements
         self.usn_box = None
@@ -60,10 +68,13 @@ class ResultScraper:
         
         self.driver = webdriver.Chrome(service=service, options=opts)
         self.actions = ActionChains(self.driver)
+        self.wait = WebDriverWait(self.driver, WAIT_TIMEOUT)
         self.driver.maximize_window()
         self.driver.get(self.website_url)
         
         self.main_window = self.driver.window_handles[0]
+        logger.info(f"Driver setup complete. Opened {self.website_url}")
+        # Initial wait for page load - can be kept or replaced by explicit wait for element
         time.sleep(WAIT_AFTER_STARTUP)
     
     def locate_page_elements(self):
@@ -74,12 +85,13 @@ class ResultScraper:
             True if all elements found, False otherwise
         """
         try:
-            self.usn_box = self.driver.find_element(By.XPATH, XPATH_USN_INPUT)
-            self.captcha_box = self.driver.find_element(By.XPATH, XPATH_CAPTCHA_INPUT)
-            self.submit_btn = self.driver.find_element(By.XPATH, XPATH_SUBMIT_BUTTON)
+            self.usn_box = self.wait.until(EC.presence_of_element_located((By.XPATH, XPATH_USN_INPUT)))
+            self.captcha_box = self.wait.until(EC.presence_of_element_located((By.XPATH, XPATH_CAPTCHA_INPUT)))
+            self.submit_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, XPATH_SUBMIT_BUTTON)))
+            logger.info("Page elements located successfully.")
             return True
-        except NoSuchElementException:
-            print("Page elements not found. The website layout may have changed.")
+        except (NoSuchElementException, TimeoutException) as e:
+            logger.error(f"Page elements not found: {e}")
             return False
     
     def enter_usn_and_captcha(self, usn, captcha):
@@ -90,10 +102,16 @@ class ResultScraper:
             usn: Student USN to enter
             captcha: Captcha value to enter
         """
+
+        self.usn_box.clear()
         self.usn_box.send_keys(usn)
-        time.sleep(WAIT_AFTER_INPUT)
+        # Small sleep might still be needed for stability after typing, but reduced
+        time.sleep(WAIT_AFTER_INPUT) 
+        
+        self.captcha_box.clear()
         self.captcha_box.send_keys(captcha)
         time.sleep(WAIT_AFTER_INPUT)
+        logger.debug(f"Entered USN: {usn} and Captcha")
     
     def submit_and_switch_to_result(self):
         """
@@ -107,13 +125,15 @@ class ResultScraper:
         self.submit_btn.click()
         self.actions.key_up(Keys.LEFT_CONTROL).perform()
         
-        # Check if a new window opened
-        if len(self.driver.window_handles) > 1:
+        # Wait for new window
+        try:
+            self.wait.until(EC.number_of_windows_to_be(2))
             result_window = self.driver.window_handles[1]
             self.driver.switch_to.window(result_window)
+            logger.info("Switched to result window.")
             return True
-        else:
-            print("Result window did not open.")
+        except TimeoutException:
+            logger.warning("Result window did not open within timeout.")
             self.usn_box.clear()
             return False
     
@@ -125,11 +145,15 @@ class ResultScraper:
             Tuple of (usn, name) or (None, None) on error
         """
         try:
-            usn = self.driver.find_element(By.XPATH, XPATH_STUDENT_USN).text
-            name = self.driver.find_element(By.XPATH, XPATH_STUDENT_NAME).text
+            usn_element = self.wait.until(EC.presence_of_element_located((By.XPATH, XPATH_STUDENT_USN)))
+            name_element = self.driver.find_element(By.XPATH, XPATH_STUDENT_NAME)
+            
+            usn = usn_element.text
+            name = name_element.text
+            logger.info(f"Scraped info for USN: {usn}, Name: {name}")
             return usn, name
-        except NoSuchElementException as e:
-            print(f"Error extracting student info: {e}")
+        except (NoSuchElementException, TimeoutException) as e:
+            logger.error(f"Error extracting student info: {e}")
             return None, None
     
     def scrape_subjects(self):
@@ -174,16 +198,27 @@ class ResultScraper:
                 # No more subjects found
                 break
         
+        logger.info(f"Scraped {len(subjects)} subjects.")
         return subjects
     
     def close_result_and_return_to_main(self):
         """Close the result window and switch back to main window"""
-        self.driver.close()
-        self.driver.switch_to.window(self.main_window)
-        self.usn_box.clear()
-        time.sleep(WAIT_AFTER_INPUT)
+        try:
+            self.driver.close()
+            self.driver.switch_to.window(self.main_window)
+            self.usn_box.clear()
+            # Wait for main window to be active/interactable again
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, XPATH_USN_INPUT)))
+            logger.debug("Closed result window and returned to main.")
+        except Exception as e:
+             logger.error(f"Error returning to main window: {e}")
     
     def cleanup(self):
         """Clean up driver resources"""
+
         if self.driver:
-            self.driver.quit()
+            try:
+                self.driver.quit()
+                logger.info("Driver exited successfully.")
+            except Exception as e:
+                logger.error(f"Error closing driver: {e}")

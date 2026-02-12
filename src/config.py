@@ -29,7 +29,8 @@ SUBJECT_RESULT_INDEX = 6
 # Maximum number of subjects to check
 MAX_SUBJECTS = 14
 
-# Wait times (in seconds)
-WAIT_AFTER_STARTUP = 3
-WAIT_BEFORE_CAPTCHA = 3
+# Waits (seconds)
+WAIT_AFTER_STARTUP = 2
+WAIT_BEFORE_CAPTCHA = 1
 WAIT_AFTER_INPUT = 0.5
+WAIT_TIMEOUT = 10  # Explicit wait timeout

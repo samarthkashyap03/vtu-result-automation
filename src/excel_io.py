@@ -5,6 +5,10 @@ Handles reading USN values from input file and writing results to output file
 
 import openpyxl
 import xlwt
+import logging
+from logger import setup_logger
+
+logger = setup_logger(__name__)
 from config import (
     EXCEL_HEADER_ROW,
     EXCEL_SUBHEADER_ROW,
@@ -27,9 +31,16 @@ def load_input_workbook(file_path):
     try:
         workbook = openpyxl.load_workbook(file_path)
         sheet = workbook.active
+        logger.info(f"Loaded input workbook: {file_path}")
         return workbook, sheet
+    except FileNotFoundError:
+        logger.error(f"Input file not found: {file_path}")
+        return None, None
+    except PermissionError:
+        logger.error(f"Permission denied accessing input file: {file_path}. Is it open?")
+        return None, None
     except Exception as e:
-        print(f"Failed to open input Excel file: {e}")
+        logger.error(f"Failed to open input Excel file: {e}")
         return None, None
 
 
@@ -127,5 +138,12 @@ def save_workbook(workbook, file_path):
         workbook: The workbook to save
         file_path: Path where the file should be saved
     """
-    workbook.save(file_path)
-    print(f"Saved results to {file_path}")
+    try:
+        workbook.save(file_path)
+        logger.info(f"Saved results to {file_path}")
+    except PermissionError:
+        logger.error(f"Permission denied saving to {file_path}. Is it open?")
+        raise
+    except Exception as e:
+         logger.error(f"Failed to save workbook: {e}")
+         raise
