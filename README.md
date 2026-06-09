@@ -6,7 +6,7 @@ This project was originally built and used across multiple departments in my col
 
 ---
 
-## 🚀 Tech Stack & Skills Used
+##  Tech Stack
 
 - **Python**
 - **Tkinter** – Desktop GUI
@@ -17,7 +17,7 @@ This project was originally built and used across multiple departments in my col
 
 ---
 
-## 📌 What This Tool Does
+##  What This Tool Does
 
 - Reads student USNs from an Excel file
 - Opens the VTU results website in Google Chrome
@@ -29,20 +29,18 @@ This project was originally built and used across multiple departments in my col
 
 ---
 
-## ⚠️ Important Notes
+## Important Notes
 
-- The VTU portal uses a **captcha**, so full automation is not possible.
-- In the current version, the captcha must be entered **manually via the terminal/console** when prompted.
+- The VTU portal uses a captcha, so the process cannot be fully automated.
 - The tool relies on VTU(Visevesvaraya Technological university, Karnataka, India) website structure (XPath selectors).  
   If the website layout changes, the selectors may need to be updated.
-- **Do not upload real student data** (USNs, names, results) to GitHub.  
-  Use only anonymized or dummy data for testing.
+- Real student data should never be committed to the repository.
 
 ---
 
-## 🛠️ Setup Instructions
+##  Setup Instructions
 
-### 1️⃣ Install Dependencies
+### Install Dependencies
 
 From the repository root:
 
@@ -50,7 +48,7 @@ From the repository root:
 pip install -r requirements.txt
 ```
 
-### 2️⃣ ChromeDriver Setup
+### ChromeDriver Setup
 
 This tool requires ChromeDriver.
 
@@ -59,7 +57,7 @@ This tool requires ChromeDriver.
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 From the repository root:
 
@@ -69,7 +67,7 @@ python src/main.py
 
 ---
 
-## 🖥️ How to Use the Application
+##  How to Use the Application
 
 ### GUI Inputs
 
@@ -97,7 +95,7 @@ Click **SUBMIT** to start automation.
 
 ---
 
-## 📤 Output
+##  Output
 
 Generates an Excel `.xls` file containing:
 
@@ -108,34 +106,14 @@ Generates an Excel `.xls` file containing:
 
 ---
 
-## 🗺️ Planned Improvements
-
-- [x] Refactor code into multiple modules (GUI, scraping, export)
-- [x] Move captcha input fully into the GUI
-- [ ] Add anonymized sample input/output files
-- [ ] Improve GUI layout and styling
-- [x] Improve error handling and robustness
-
----
-
-## 👤 Authors
+## Authors
 
 **Samarth Kashyap**
 
 Original project developed during undergraduate studies (Department of CSE)
 
-Currently pursuing a Master's degree in Computer Science at RPTU Kaiserslautern, Germany
-
 ---
 
-## 📄 License
+##  License
 
 This project is shared for educational purposes.
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
-Feel free to check the issues page if you want to contribute.
