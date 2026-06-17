@@ -29,6 +29,68 @@ This project was originally built and used across multiple departments in my col
 
 ---
 
+## Architecture
+
+The project is split into separate files to keep the interface, scraping logic, Excel reader/writer, and settings organized.
+
+### Architecture Diagram
+
+```mermaid
+graph TD
+    subgraph UI ["User Interface"]
+        gui[gui.py - Window & UI]
+    end
+
+    subgraph Core ["Application Core"]
+        main[main.py - Control Flow]
+    end
+
+    subgraph IO ["I/O & Automation Modules"]
+        scraper[scraper.py - Selenium Web Scraper]
+        excel_io[excel_io.py - Excel Reader/Writer]
+    end
+
+    subgraph Utils ["Utility Modules"]
+        config[config.py - XPaths & Settings]
+        logger[logger.py - Logger]
+    end
+
+    subgraph External ["External Integrations"]
+        vtu_portal["VTU Results Portal (Web)"]
+        chromedriver["ChromeDriver / Chrome Browser"]
+        input_file["Input USN Sheet (.xlsx)"]
+        output_file["Output Results Sheet (.xls)"]
+    end
+
+    gui -->|Triggers & User Inputs| main
+    main -->|Retrieves Captcha| gui
+    main -->|Orchestrates Scraping| scraper
+    main -->|Orchestrates Excel reading/writing| excel_io
+    
+    scraper -->|Uses Config Constants| config
+    scraper -->|Controls Browser via Selenium| chromedriver
+    chromedriver -->|Fetches Data & Captcha| vtu_portal
+
+    excel_io -->|Reads USNs| input_file
+    excel_io -->|Writes Student & Subject Results| output_file
+    excel_io -->|Uses Config Constants| config
+    
+    main -.->|Logs events| logger
+    scraper -.->|Logs events| logger
+    excel_io -.->|Logs events| logger
+```
+
+### Module Roles
+
+- **[main.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/main.py)**: The main script that runs the app. It launches the UI, reads user inputs, starts the web browser, loops through each student number to get results, and writes the data to the Excel sheet.
+- **[gui.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/gui.py)**: Creates the Tkinter window. It takes settings like file paths and rows from the user, and pops up a dialog box to ask for the captcha when needed.
+- **[scraper.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/scraper.py)**: Controls the Google Chrome browser using Selenium. It types in student numbers, enters the captcha, extracts name and marks from the page using XPaths, and closes the result tab when done.
+- **[excel_io.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/excel_io.py)**: Handles Excel files. It reads student numbers from the input spreadsheet and writes marks, names, and pass/fail highlights to the output spreadsheet.
+- **[config.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/config.py)**: Stores selectors (XPaths) to find elements on the VTU website, timing delays, and output spreadsheet column positions.
+- **[logger.py](file:///c:/Users/samar/Desktop/software-development/portfolio-projects/vtu-result-analysis/src/logger.py)**: Sets up basic logging so that application messages are printed to both the terminal and `app.log`.
+
+---
+
 ## ⚠️ Important Notes
 
 - The VTU portal uses a **captcha**, so full automation is not possible.
