@@ -1,3 +1,84 @@
 2026-02-12 23:29:39,606 - __main__ - INFO - Starting application GUI.
 2026-02-12 23:29:45,070 - __main__ - ERROR - Invalid row numbers provided.
 2026-02-12 23:29:51,259 - __main__ - INFO - Starting application GUI.
+2026-06-20 20:28:31,927 - __main__ - INFO - Starting application GUI.
+2026-11-18 22:09:52,954 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp2nhi50dx.xlsx
+2026-11-18 22:09:52,957 - excel_io - ERROR - Input file not found: /nonexistent/path/file.xlsx
+2026-11-18 22:09:52,966 - excel_io - ERROR - Failed to open input Excel file: File is not a zip file
+2026-11-18 22:09:53,001 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp6l9og3d9.xlsx
+2026-11-18 22:09:53,035 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp869zfpdi.xlsx
+2026-11-18 22:09:53,054 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp7qvo8rkm.xlsx
+2026-11-18 22:09:53,075 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp_5wilsb7.xlsx
+2026-11-18 22:09:53,094 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp1kq6zidc.xlsx
+2026-11-18 22:09:53,112 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmpcwrmibze.xlsx
+2026-11-18 22:09:53,141 - excel_io - INFO - Saved results to C:\Users\samar\AppData\Local\Temp\tmpom128bq5.xls
+2026-11-18 22:09:53,144 - excel_io - ERROR - Failed to save workbook: [Errno 2] No such file or directory: '/nonexistent_dir/that/does/not/exist/out.xls'
+2026-11-18 22:09:53,284 - main - ERROR - Invalid row numbers provided.
+2026-11-18 22:09:53,290 - main - ERROR - Invalid row numbers provided.
+2026-11-18 22:09:53,302 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,303 - main - CRITICAL - Failed to setup driver: Chrome not found
+2026-11-18 22:09:53,311 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,312 - main - WARNING - Captcha input cancelled by user.
+2026-11-18 22:09:53,319 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,333 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,367 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,380 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:09:53,393 - scraper - INFO - Page elements located successfully.
+2026-11-18 22:09:53,397 - scraper - ERROR - Page elements not found: Message: timed out
+
+2026-11-18 22:09:53,401 - scraper - ERROR - Page elements not found: Message: not found
+
+2026-11-18 22:09:53,420 - scraper - INFO - Switched to result window.
+2026-11-18 22:09:53,425 - scraper - INFO - Switched to result window.
+2026-11-18 22:09:53,429 - scraper - WARNING - Result window did not open within timeout.
+2026-11-18 22:09:53,436 - scraper - WARNING - Result window did not open within timeout.
+2026-11-18 22:09:53,446 - scraper - INFO - Scraped info for USN: 1AT21CS001, Name: Alice Kumar
+2026-11-18 22:09:53,450 - scraper - ERROR - Error extracting student info: Message: timed out
+
+2026-11-18 22:09:53,450 - scraper - ERROR - Error extracting student info: Message: not found
+
+2026-11-18 22:09:53,456 - scraper - INFO - Scraped 0 subjects.
+2026-11-18 22:09:53,460 - scraper - INFO - Scraped 1 subjects.
+2026-11-18 22:09:53,467 - scraper - INFO - Scraped 14 subjects.
+2026-11-18 22:09:53,467 - scraper - INFO - Driver exited successfully.
+2026-11-18 22:09:53,477 - scraper - ERROR - Error closing driver: WebDriver crashed
+2026-11-18 22:15:43,264 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmplhvywzjk.xlsx
+2026-11-18 22:15:43,272 - excel_io - ERROR - Input file not found: /nonexistent/path/file.xlsx
+2026-11-18 22:15:43,272 - excel_io - ERROR - Failed to open input Excel file: File is not a zip file
+2026-11-18 22:15:43,308 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmpw1goz7ao.xlsx
+2026-11-18 22:15:43,338 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmpnv3ar3lv.xlsx
+2026-11-18 22:15:43,359 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmp7jxog0uc.xlsx
+2026-11-18 22:15:43,386 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmphsoitkrg.xlsx
+2026-11-18 22:15:43,403 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmpaco0olo9.xlsx
+2026-11-18 22:15:43,423 - excel_io - INFO - Loaded input workbook: C:\Users\samar\AppData\Local\Temp\tmpot_0fd2y.xlsx
+2026-11-18 22:15:43,464 - excel_io - INFO - Saved results to C:\Users\samar\AppData\Local\Temp\tmpp8s3h4dh.xls
+2026-11-18 22:15:43,467 - excel_io - ERROR - Failed to save workbook: [Errno 2] No such file or directory: '/nonexistent_dir/that/does/not/exist/out.xls'
+2026-11-18 22:15:43,557 - main - ERROR - Invalid row numbers provided.
+2026-11-18 22:15:43,560 - main - ERROR - Invalid row numbers provided.
+2026-11-18 22:15:43,572 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,573 - main - CRITICAL - Failed to setup driver: Chrome not found
+2026-11-18 22:15:43,581 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,582 - main - WARNING - Captcha input cancelled by user.
+2026-11-18 22:15:43,595 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,608 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,619 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,630 - main - INFO - Processing USNs from row 1 to 2
+2026-11-18 22:15:43,648 - scraper - INFO - Page elements located successfully.
+2026-11-18 22:15:43,652 - scraper - ERROR - Page elements not found: Message: timed out
+
+2026-11-18 22:15:43,654 - scraper - ERROR - Page elements not found: Message: not found
+
+2026-11-18 22:15:43,704 - scraper - INFO - Switched to result window.
+2026-11-18 22:15:43,711 - scraper - INFO - Switched to result window.
+2026-11-18 22:15:43,718 - scraper - WARNING - Result window did not open within timeout.
+2026-11-18 22:15:43,724 - scraper - WARNING - Result window did not open within timeout.
+2026-11-18 22:15:43,730 - scraper - INFO - Scraped info for USN: 1AT21CS001, Name: Alice Kumar
+2026-11-18 22:15:43,734 - scraper - ERROR - Error extracting student info: Message: timed out
+
+2026-11-18 22:15:43,739 - scraper - ERROR - Error extracting student info: Message: not found
+
+2026-11-18 22:15:43,742 - scraper - INFO - Scraped 0 subjects.
+2026-11-18 22:15:43,749 - scraper - INFO - Scraped 1 subjects.
+2026-11-18 22:15:43,754 - scraper - INFO - Scraped 14 subjects.
+2026-11-18 22:15:43,761 - scraper - INFO - Driver exited successfully.
+2026-11-18 22:15:43,767 - scraper - ERROR - Error closing driver: WebDriver crashed
